@@ -15,7 +15,7 @@ class Somar {
         //Leituras
         System.out.println("Digite um número");
         num1 = sc.nextInt();
-        System.out.println("Digite outro número");
+        System.out.println("Digitedwa outro número");
         num2 = sc.nextInt();
 
         //Somar
