@@ -22,8 +22,8 @@ public class UsuarioDAO extends DAO {
 		boolean status = false;
 		try {  
 			Statement st = conexao.createStatement();
-			String sql = "INSERT INTO usuario (codigo, login, senha, sexo) "
-				       + "VALUES ("+usuario.getCodigo()+ ", '" + usuario.getLogin() + "', '"  
+			String sql = "INSERT INTO usuario (id, nome, login, senha, sexo) "
+				       + "VALUES ("+usuario.getId()+ ", '" + usuario.getNome() + "', '" + usuario.getLogin() + "', '"  
 				       + usuario.getSenha() + "', '" + usuario.getSexo() + "');";
 			System.out.println(sql);
 			st.executeUpdate(sql);
@@ -36,16 +36,16 @@ public class UsuarioDAO extends DAO {
 	}
 
 	
-	public Usuario get(int codigo) {
+	public Usuario getById(int id) {
 		Usuario usuario = null;
 		
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM produto WHERE id=" + codigo;
+			String sql = "SELECT * FROM usuario WHERE id=" + id;
 			System.out.println(sql);
 			ResultSet rs = st.executeQuery(sql);	
 	        if(rs.next()){            
-	        	 usuario = new Usuario(rs.getInt("codigo"), rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
+	        	 usuario = new Usuario(rs.getInt("id"), rs.getString("nome"), rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
 	        }
 	        st.close();
 		} catch (Exception e) {
@@ -55,37 +55,18 @@ public class UsuarioDAO extends DAO {
 	}
 	
 	
-	public List<Usuario> get() {
-		return get("");
-	}
-
 	
-	public List<Usuario> getOrderByCodigo() {
-		return get("codigo");		
-	}
-	
-	
-	public List<Usuario> getOrderByLogin() {
-		return get("login");		
-	}
-	
-	
-	public List<Usuario> getOrderBySexo() {
-		return get("sexo");		
-	}
-	
-	
-	private List<Usuario> get(String orderBy) {	
+	public List<Usuario> getAll() {	
 	
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		
 		try {
 			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM usuario" + ((orderBy.trim().length() == 0) ? "" : (" ORDER BY " + orderBy));
+			String sql = "SELECT * FROM usuario";
 			System.out.println(sql);
 			ResultSet rs = st.executeQuery(sql);	           
 	        while(rs.next()) {	            	
-	        	Usuario u = new Usuario(rs.getInt("codigo"), rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
+	        	Usuario u = new Usuario(rs.getInt("id"), rs.getString("nome"),  rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
 	            usuarios.add(u);
 	        }
 	        st.close();
@@ -94,35 +75,14 @@ public class UsuarioDAO extends DAO {
 		}
 		return usuarios;
 	}
-
-
-	public List<Usuario> getSexoMasculino() {
-		List<Usuario> usuarios = new ArrayList<Usuario>();
-		
-		try {
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM usuario WHERE usuario.sexo LIKE 'M'";
-			System.out.println(sql);
-			ResultSet rs = st.executeQuery(sql);	           
-	        while(rs.next()) {	            	
-	        	Usuario u = new Usuario(rs.getInt("codigo"), rs.getString("login"), rs.getString("senha"), rs.getString("sexo").charAt(0));
-	            usuarios.add(u);
-	        }
-	        st.close();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-		return usuarios;
-	}
-	
 	
 	public boolean update(Usuario usuario) {
 		boolean status = false;
 		try {  
 			Statement st = conexao.createStatement();
-			String sql = "UPDATE usuario SET login = '" + usuario.getLogin() + "', senha = '"  
+			String sql = "UPDATE usuario SET nome = '" + usuario.getNome() + "', login = '" + usuario.getLogin() + "', senha = '"  
 				       + usuario.getSenha() + "', sexo = '" + usuario.getSexo() + "'"
-					   + " WHERE codigo = " + usuario.getCodigo();
+					   + " WHERE id = " + usuario.getId();
 			System.out.println(sql);
 			st.executeUpdate(sql);
 			st.close();
@@ -133,11 +93,11 @@ public class UsuarioDAO extends DAO {
 		return status;
 	}
 	
-	public boolean delete(int codigo) {
+	public boolean delete(int id) {
 		boolean status = false;
 		try {  
 			Statement st = conexao.createStatement();
-			String sql = "DELETE FROM usuario WHERE codigo = " + codigo;
+			String sql = "DELETE FROM usuario WHERE id = " + id;
 			System.out.println(sql);
 			st.executeUpdate(sql);
 			st.close();
@@ -149,19 +109,4 @@ public class UsuarioDAO extends DAO {
 	}
 	
 	
-	public boolean autenticar(String login, String senha) {
-		boolean resp = false;
-		
-		try {
-			Statement st = conexao.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			String sql = "SELECT * FROM usuario WHERE login LIKE '" + login + "' AND senha LIKE '" + senha  + "'";
-			System.out.println(sql);
-			ResultSet rs = st.executeQuery(sql);
-			resp = rs.next();
-	        st.close();
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-		return resp;
-	}	
 }

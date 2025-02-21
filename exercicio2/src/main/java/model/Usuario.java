@@ -1,31 +1,42 @@
 package model;
 
 public class Usuario {
-	private int codigo;
+	private int id;
+	private String nome;
 	private String login;
 	private String senha;
 	private char sexo;
 	
 	public Usuario() {
-		this.codigo = -1;
+		this.id = -1;
+		this.nome = "";
 		this.login = "";
 		this.senha = "";
 		this.sexo = '*';
 	}
 	
-	public Usuario(int codigo, String login, String senha, char sexo) {
-		this.codigo = codigo;
+	public Usuario(int id, String nome, String login, String senha, char sexo) {
+		this.id = id;
+		this.nome = nome;
 		this.login = login;
 		this.senha = senha;
 		this.sexo = sexo;
 	}
 
-	public int getCodigo() {
-		return codigo;
+	public int getId() {
+		return id;
 	}
 
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getLogin() {
@@ -54,6 +65,6 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [codigo=" + codigo + ", login=" + login + ", senha=" + senha + ", sexo=" + sexo + "]";
+		return "Usuario [ID = " + id + ", nome = " + nome + ", login = " + login + ", senha = " + senha + ", sexo = " + sexo + "]";
 	}
 }
