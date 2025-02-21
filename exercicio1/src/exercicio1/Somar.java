@@ -1,6 +1,3 @@
-/**
- * 
- */
 package exercicio1;
 
 import java.util.*;
@@ -15,7 +12,7 @@ class Somar {
         //Leituras
         System.out.println("Digite um número");
         num1 = sc.nextInt();
-        System.out.println("Digitdwaddwawaedwa outro número");
+        System.out.println("Digite outro número");
         num2 = sc.nextInt();
 
         //Somar
